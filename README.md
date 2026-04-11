@@ -59,6 +59,53 @@ The dataset contains **no ground-truth labels**. The goal is to build a multi-cl
 
 **Flow & Water Quality:** `H2_Flowrate_Purification_outlet`, `DM_water_condctivity`, `DM_water_flow_from_B.L.`
 
+## EDA Summary
+
+### Idle vs Active
+The dataset contains a significant proportion of idle readings (`Voltage_1_Stack == 0`). During idle, all process features collapse to zero or ambient values. These are excluded from risk labeling in both approaches.
+
+### Electrical Features
+Current, Voltage, and DC Power are tightly correlated (r ≥ 0.95). During active operation, the stack runs near full load (~7,800–8,000 A), with bimodal distributions driven by idle/active separation.
+
+### Thermal Features
+Room temperature is stable (24–26 °C). H₂ and O₂ outlet temperatures reach 80–90 °C during active operation, which is the expected AWE operating range.
+
+### Gas Purity (Critical Safety Indicators)
+- **O₂ in H₂** safety limit: **0.5%** — a notable fraction of active readings exceed this
+- **H₂ in O₂** safety limit: **1.5%** — crossover events visible in the tail of the distribution
+- These features are **excluded from model input** (used only for labeling) to prevent data leakage
+
+### Lye & Separator
+- `LDI_H2_&_O2_Separator` > 1.5 signals dangerous gas mixing risk
+- Lye concentration normal range: 25–32 wt%
+
+### Water Quality
+- DM water conductivity should stay below 1 µS/cm; readings above this indicate contamination risk
+
+---
+
+## Feature Engineering
+
+Features used in the **model input** (after removing label-leaking columns):
+
+```python
+MODEL_FEATURES = [
+    "Room_temperature",
+    "Current_1_stack",
+    "DC_Power_Consumption_1_Stack",
+    "H2_side_outlet_temp_1_stack",
+    "O2_side_outlet_temp_1_stack",
+    "Lye_Supply_to_Electrolyzer_Temp",
+    "Lye_Flow_to_1_Stack",
+    "Pressure_O2_Separator",
+    "H2_Flowrate_Purification_outlet",
+    "DM_water_flow_from_B.L.",
+]
+```
+
+> Features that directly encode the label (`O2_content_in_H2`, `H2_content_in_O2`, `Voltage_1_Stack`, `LDI_H2_&_O2_Separator`, `Lye_Concentration`, `DM_water_condctivity`) are **dropped from X** to prevent leakage.
+
+---
 ---
 
 ## Project Structure
@@ -185,53 +232,7 @@ Both approaches train and evaluate the **same model suite**:
 
 ---
 
-## EDA Summary
 
-### Idle vs Active
-The dataset contains a significant proportion of idle readings (`Voltage_1_Stack == 0`). During idle, all process features collapse to zero or ambient values. These are excluded from risk labeling in both approaches.
-
-### Electrical Features
-Current, Voltage, and DC Power are tightly correlated (r ≥ 0.95). During active operation, the stack runs near full load (~7,800–8,000 A), with bimodal distributions driven by idle/active separation.
-
-### Thermal Features
-Room temperature is stable (24–26 °C). H₂ and O₂ outlet temperatures reach 80–90 °C during active operation, which is the expected AWE operating range.
-
-### Gas Purity (Critical Safety Indicators)
-- **O₂ in H₂** safety limit: **0.5%** — a notable fraction of active readings exceed this
-- **H₂ in O₂** safety limit: **1.5%** — crossover events visible in the tail of the distribution
-- These features are **excluded from model input** (used only for labeling) to prevent data leakage
-
-### Lye & Separator
-- `LDI_H2_&_O2_Separator` > 1.5 signals dangerous gas mixing risk
-- Lye concentration normal range: 25–32 wt%
-
-### Water Quality
-- DM water conductivity should stay below 1 µS/cm; readings above this indicate contamination risk
-
----
-
-## Feature Engineering
-
-Features used in the **model input** (after removing label-leaking columns):
-
-```python
-MODEL_FEATURES = [
-    "Room_temperature",
-    "Current_1_stack",
-    "DC_Power_Consumption_1_Stack",
-    "H2_side_outlet_temp_1_stack",
-    "O2_side_outlet_temp_1_stack",
-    "Lye_Supply_to_Electrolyzer_Temp",
-    "Lye_Flow_to_1_Stack",
-    "Pressure_O2_Separator",
-    "H2_Flowrate_Purification_outlet",
-    "DM_water_flow_from_B.L.",
-]
-```
-
-> Features that directly encode the label (`O2_content_in_H2`, `H2_content_in_O2`, `Voltage_1_Stack`, `LDI_H2_&_O2_Separator`, `Lye_Concentration`, `DM_water_condctivity`) are **dropped from X** to prevent leakage.
-
----
 
 ## Evaluation Strategy
 
