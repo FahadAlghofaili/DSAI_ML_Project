@@ -344,7 +344,7 @@ def main():
         st.markdown("""
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
             <span class="metric-pill"> Logistic Regression</span>
-            <span class="metric-pill">Accuracy 86.8%</span>
+            <span class="metric-pill">Accuracy 93.34%</span>
 
         </div>
         """, unsafe_allow_html=True)
