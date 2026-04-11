@@ -67,7 +67,7 @@ The dataset contains **no ground-truth labels**. The goal is to build a multi-cl
 ├── final_preprossing_EDA_AI_V1.ipynb   # Approach 1: Clustering-based labeling
 ├── final_preprossing_EDA_AI_V2.ipynb   # Approach 2: Threshold-based labeling (best)
 ├── Acwa_power.pdf                      # Supporting document — AWE failure modes
-├── ACWA_DATASET.csv                    # Raw sensor data (not included in repo)
+├── ACWA_DATASET.csv                    # Raw sensor data 
 └── README.md
 ```
 
