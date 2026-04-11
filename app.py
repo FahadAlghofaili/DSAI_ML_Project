@@ -496,7 +496,7 @@ def main():
         border-top:1.5px solid rgba(27,153,134,0.12);">
         <span style="font-size:0.82rem;color:#6ec8bc;">
              HydroGuard System · ACWA Power Green Hydrogen · Tuwaiq Academy 2026 ·
-            Developed by Ramah Alharbi · Bayan · Fahad Alghofaili · Ahmed Alshimshir
+            Developed by Ramah Alharbi · Bayan Alfarsi · Fahad Alghofaili · Ahmed Alshimshir
         </span>
     </div>
     """, unsafe_allow_html=True)
