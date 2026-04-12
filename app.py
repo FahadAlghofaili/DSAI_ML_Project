@@ -398,7 +398,7 @@ def main():
                 </div>
                 <div style="background:linear-gradient(135deg,rgba(27,153,134,0.08),rgba(0,201,167,0.05));
                     border:1.5px solid rgba(27,153,134,0.18);border-radius:14px;padding:0.9rem;text-align:center;">
-                    <div style="font-size:1.6rem;font-weight:800;color:#1b9986;">86.8%</div>
+                    <div style="font-size:1.6rem;font-weight:800;color:#1b9986;">93.34%</div>
                     <div style="font-size:0.75rem;color:#5ab8ab;">Accuracy</div>
                 </div>
             </div>
